@@ -1,0 +1,7 @@
+RewriteEngine On
+
+# Se o pedido já está dentro de /public/, não redireciona
+RewriteCond %{REQUEST_URI} !^/agenda/public/
+
+# Redireciona tudo para /public/
+RewriteRule ^(.*)$ /agenda/public/$1 [L]
