@@ -1,11 +1,33 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+session_start();
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../app/Core/Database.php';
+require __DIR__ . '/../app/Controllers/AuthController.php';
 
-use App\Controllers\AgendamentoController;
+use App\Controllers\AuthController;
 
-$controller = new AgendamentoController();
-$controller->index();
+$action = $_GET['action'] ?? null;
+
+$controller = new AuthController();
+
+switch ($action) {
+    case 'login':
+        $controller->login($_POST);
+        break;
+
+    case 'register':
+        $controller->register($_POST);
+        break;
+
+    case 'forgotPassword':
+        $controller->forgotPassword($_POST);
+        break;
+
+    case 'logout':
+        $controller->logout();
+        break;
+
+    default:
+        include __DIR__ . '/login.php';
+        break;
+}
