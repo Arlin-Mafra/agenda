@@ -10,6 +10,7 @@ $success = $_GET['success'] ?? null;
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <?php include __DIR__ . '/partials/head_tags.php'; ?>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Recuperar senha - AgendaPro</title>
@@ -30,7 +31,7 @@ $success = $_GET['success'] ?? null;
       <div class="alert success"><?= htmlspecialchars($success) ?></div>
     <?php endif; ?>
 
-    <form class="auth-form" action="../app/Controllers/AuthController.php?action=forgotPassword" method="POST" novalidate>
+   <form class="auth-form" action="index.php?action=forgotPassword" method="POST">
       <div class="field">
         <label for="email">Digite seu e-mail</label>
         <input id="email" type="email" name="email" placeholder="seuemail@empresa.com" required>

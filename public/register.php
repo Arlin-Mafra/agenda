@@ -6,10 +6,17 @@ if (isset($_SESSION['user'])) {
 }
 $error = $_GET['error'] ?? null;
 $success = $_GET['success'] ?? null;
+
+// Gera token CSRF simples
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION['csrf_token'];
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <?php include __DIR__ . '/partials/head_tags.php'; ?>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Criar conta - AgendaPro</title>
@@ -30,7 +37,9 @@ $success = $_GET['success'] ?? null;
       <div class="alert success"><?= htmlspecialchars($success) ?></div>
     <?php endif; ?>
 
-    <form class="auth-form" action="../app/Controllers/AuthController.php?action=register" method="POST" novalidate>
+    <!-- action corrigido para chamar index.php?action=register -->
+    <form class="auth-form"  action="index.php?action=register" method="POST">
+      <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
       <div class="field">
         <label for="nome">Nome completo</label>
         <input id="nome" type="text" name="nome" placeholder="Seu nome" required>
@@ -47,6 +56,8 @@ $success = $_GET['success'] ?? null;
         <label for="senha_confirm">Confirmar senha</label>
         <input id="senha_confirm" type="password" name="senha_confirm" placeholder="Repita a senha" required>
       </div>
+      <br>
+
       <button class="button" type="submit">Criar conta</button>
     </form>
 

@@ -3,8 +3,12 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use App\database\seeds\DatabaseSeeder;
+use App\database\seeds\UserTenantSeeder;
 
-$seeder = new DatabaseSeeder();
-$seeder->run();
+// $seeder = new DatabaseSeeder();
+// $seeder->run();
 
-echo "Seed executado com sucesso.\n";
+$seederTenant = new UserTenantSeeder();
+$seederTenant->run();
+
+echo "Seeds executado com sucesso.\n";

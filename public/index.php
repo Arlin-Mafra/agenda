@@ -1,33 +1,49 @@
 <?php
-session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-require __DIR__ . '/../app/Core/Database.php';
-require __DIR__ . '/../app/Controllers/AuthController.php';
+    session_start();
 
-use App\Controllers\AuthController;
+    require __DIR__ . '/../app/Core/Database.php';
+    require __DIR__ . '/../app/Controllers/AuthController.php';
 
-$action = $_GET['action'] ?? null;
+    use App\Controllers\AuthController;
 
-$controller = new AuthController();
+    $action = $_GET['action'] ?? null;
 
-switch ($action) {
-    case 'login':
-        $controller->login($_POST);
-        break;
+    try{
 
-    case 'register':
-        $controller->register($_POST);
-        break;
+    $controller = new AuthController();
 
-    case 'forgotPassword':
-        $controller->forgotPassword($_POST);
-        break;
 
-    case 'logout':
-        $controller->logout();
-        break;
+    switch ($action) {
+        case 'login':
+            $controller->login($_POST);
+            break;
 
-    default:
-        include __DIR__ . '/login.php';
-        break;
-}
+        case 'register':
+            $controller->register($_POST);
+            break;
+
+        case 'forgotPassword':
+            $controller->forgotPassword($_POST);
+            break;
+
+        case 'logout':
+            $controller->logout();
+            break;
+
+        default:
+            include __DIR__ . '/login.php';
+            break;
+    }
+
+
+    } catch (\Throwable $e) {
+        // Log para o error_log do PHP
+        error_log('Fatal error: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
+        // Exibir no navegador (apenas dev)
+        echo '<h1>Erro fatal</h1><pre>' . htmlspecialchars($e->getMessage()) . "\n\n" . htmlspecialchars($e->getTraceAsString()) . '</pre>';
+        exit;
+    }
